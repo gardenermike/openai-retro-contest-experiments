@@ -17,4 +17,9 @@ Rainbow is a Deep Q-Learning (DQN) algorithm I have seen described as a "kitchen
 #### PPO2
 [PPO2](https://blog.openai.com/openai-baselines-ppo/) is a high-performing policy gradient algorithm. Instead of optimizing the _reward_ per-action, as DQN algorithms do, policy gradient algorithms optimize an explicit _policy_ mapping the state observed to an action. The policy is iteratively improved during training to take actions that lead to a higher reward. PPO (and the extension, PPO2) uses a clever clipping approach to prevent dramatic updates to the policy while also avoiding expensive calculation, allowing for stable and efficient training.
 
-#### JERK (Just Enough Retained Knowledge) (https://arxiv.org/abs/1804.03720)
+#### JERK (Just Enough Retained Knowledge) 
+[JERK])https://arxiv.org/abs/1804.03720) is an algorithm introduced as part of the retro contest. The idea is simple: try random sequences of runs and jumps, and replay the sequenced with highest reward as the contest time limot approaches. In a predictable environment, JERK could eventually achieve perfect performance. The restro contest randomizes the number of steps an action is applied, so a fixed sequence is likely to derail over time.
+
+Another algorithm is worth mentioning.
+#### Evolution Strategies
+Evolution Strategies, unlike the baseline algorithms, explores by making random changes to the policy rather than taking randim actions. It is typically slow abd inefficient, but can be massively parallelized across multiple processors snd machines. I explored using Evolution Strategies to find good weights for just the flat layer of my PPO2 policy after pretraining the convolutional layers. I think that the approach has a lot of promise, but I do not currently have access to sufficient compute resources to 
