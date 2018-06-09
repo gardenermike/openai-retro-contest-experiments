@@ -30,7 +30,7 @@ tl;dr: Pretrained Rainbow works best, but a JERK/PPO2 hybrid with LSH memory cam
 
 |Algorithm|Best score (contest test set)|
 |---------|-----------------------------|
-|Rainbow|*4406.35*|
+|Rainbow|**4406.35**|
 |PPO2|2410.79|
 |JERK|2678.63|
 |JERK/PPO2 hybrid|3631.06|
