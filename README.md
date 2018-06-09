@@ -22,4 +22,13 @@ Rainbow is a Deep Q-Learning (DQN) algorithm I have seen described as a "kitchen
 
 Another algorithm is worth mentioning.
 #### Evolution Strategies
-Evolution Strategies, unlike the baseline algorithms, explores by making random changes to the policy rather than taking randim actions. It is typically slow abd inefficient, but can be massively parallelized across multiple processors snd machines. I explored using Evolution Strategies to find good weights for just the flat layer of my PPO2 policy after pretraining the convolutional layers. I think that the approach has a lot of promise, but I do not currently have access to sufficient compute resources to 
+Evolution Strategies, unlike the baseline algorithms, explores by making random changes to the policy rather than taking randim actions. It is typically slow abd inefficient, but can be massively parallelized across multiple processors snd machines. I explored using Evolution Strategies to find good weights for just the flat layer of my PPO2 policy after pretraining the convolutional layers. I think that the approach has a lot of promise, but I do not currently have access to sufficient compute resources to find a good policy in a reasonable amount of time (less than weeks or months).
+
+### Results Summary
+TL;DR: Pretrained Rainbow works best, but a JERK/PPO2 hybrid with LSH memory came close.
+
+
+
+
+
+
