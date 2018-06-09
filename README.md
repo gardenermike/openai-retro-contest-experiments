@@ -1,6 +1,6 @@
 # Experiments for OpenAI Retro Contest
 
-<video src="./713.mp4" controls=""></video>
+![Example video](./example.gif "An example round of sonic")
 
 ### Summary
 The [OpenAI Retro Contest](https://contest.openai.com/) was an opportunity to use the new [Retro](https://github.com/openai/retro) environment to test transfer learning for reinforcement learning algorithms.
