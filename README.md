@@ -27,7 +27,7 @@ Evolution Strategies, unlike the baseline algorithms, explores by making random 
 ## Results Summary
 tl;dr: Pretrained Rainbow works best, but a JERK/PPO2 hybrid with LSH memory came close.
 
-|: Algorithm|Best score (contest test set)|
+|Algorithm|Best score (contest test set)|
 |---------|-----------------------------|
 |Rainbow|**4406.35**|
 |PPO2|2410.79|
@@ -42,8 +42,8 @@ The [retro contest blog post](https://blog.openai.com/retro-contest/) describes 
 ![Contest performance graph](https://blog.openai.com/content/images/2018/03/plot_all_human_3-28b.png "Contest performance graph")
 
 ### Early success
-Immediately I noticed that Rainbow had the best performance out-of-the-box, and that pretraining might help. I [tweaked](https://github.com/gardenermike/openai-retro-contest-experiments/blob/master/rainbow/rainbow_agent_train.py) the baseline implementation to play training levels at random serially: every 5000 game steps, the current game level would be terminated and replaced with another. After training for around 5,000,000 steps, I built a version that would load the weights and [gave it a go](https://github.com/gardenermike/openai-retro-contest-experiments/blob/master/rainbow/docker-build/rainbow_agent.py).
-In that run was the both the great success and tragedy of my contest experience: the docker image built with those pretrained weights was my best-performing of the contest.
+Immediately I noticed that Rainbow had the best performance out-of-the-box, and that pretraining might help. I [tweaked](https://github.com/gardenermike/openai-retro-contest-experiments/blob/master/rainbow/rainbow_agent_train.py) the baseline implementation to play training levels at random serially: every 5000 game steps, the current game level would be terminated and replaced with another. After training for around 5,000,000 steps, I built a version that would load the weights and I [gave it a go](https://github.com/gardenermike/openai-retro-contest-experiments/blob/master/rainbow/docker-build/rainbow_agent.py).
+In that run was both the great success and tragedy of my contest experience: the docker image built with those pretrained weights was my best-performing of the contest.
 I did add not only the weights from the pretrained model, but a replay buffer of 100,000 frames from training levels. This experience buffer allowed the agent to start making informed actions immediately, and likely explains my better Rainbow performance over the published baseline.
 
 ### A series of less-successful experiments in Rainbow
