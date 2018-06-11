@@ -116,4 +116,4 @@ I think that the most promising directions to take forward include:
 * Expanding and tidying the ES implementation.
 * Improving the LSH memory mechanism used in the PPO2/JERK hybrid.
 
-Good luck!
+If you've gotten this far, you must must really be interested. I certainly wouldn't complain about pull requests, and if you create a github issue I can likely answer your question about my implementation. Good luck!
