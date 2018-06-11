@@ -72,10 +72,38 @@ Who knew working with a jerk could be so rewarding?
 The simplicity of JERK means that it runs fast. On simple levels like GreenHillZone.Act1, JERK can achieve human-level performance in some runs in a minute or less. It is amazing to watch. But on levels with time sensitivity, such as SpringYardZone.Act1, the deterministic behavior of JERK simply can't deal with the stochasticity of the contest environment.
 I experimented a lot with JERK. I made some immediate modifications:
 * After replaying a successful run, my agent will continue to play if the level is incomplete
-* Instead of using purely random play, my agent begins with the most successful prior sequence and mutates it by:
+* Instead of using purely random play, my agent immediately begins after the first random run to replay with mutation. In each level, the agent begins with the most successful prior sequence and mutates it by:
   * Excising internal steps from the run
   * Truncating some actions from the end of the sequence
   * Randomly mutating some actions, weighted to more mutation at the end of the sequence
 * Replay without mutation is swapped in heavily near the contest completion.
 
+With the above performance improvements, JERK runs a little slower on simpler levels but has much improved performance on more difficult levels.
+The idea of memory in JERK was a potent one, so I continued to explore the limits of the algorithm.
+I did two major improvments:
+* I brought a pre-trained PPO2 model into my JERK agent. This model is used for a fraction of the play that would originally be random.
+* I use the output of the PPO2 policy prior to categorization as an embedding, together with [locality-sensitive hashing (LSH)](https://en.wikipedia.org/wiki/Locality-sensitive_hashing) to look up similar prior frames and replay the highest-performing actions from those frames.
+With these additional improvements, I was able to bring JERK performance to a similar level to Rainbow (3631.06), but not quite good enough to best it.
+I think that this approach still has room to grow. Some ideas for future exploration:
+1. The LSH memory contains many frames that are almost exact or exact duplicates, which can cause the memory to only return a single action per-frame. Pre-filtering the history while periodically building the memory could solve this problem.
+1. The PPO2 agent is not currently learning in parallel with the JERK training. Allowing simultaneous training could allow for more improvement.
+1. Rainbow could be used instead of PPO2 as the backing algorithm. An additional benefit to Rainbow is that high-performing JERK sequences could be added to Rainbow's replay buffer to improve performance of Rainbow. DeepMind's recent [Mix & Match paper](https://arxiv.org/abs/1806.01780) illustrated the power of expert sequences in improving Rainbow performance.
 
+#### Evolution Strategies
+I didn't head about the contest until May, although it started a month earlier. With a few days left and no run that had put me in a position above 12 in the leaderboard, I tried a final idea in parallel with some last Rainbow experiments.
+OpenAI published a [blog post](https://blog.openai.com/evolution-strategies/), [paper](https://arxiv.org/abs/1703.03864), and [code](https://github.com/openai/evolution-strategies-starter) in March of 2017 detailing use of Evolution Strategies (ES) to solve problems in a relatively challenging domains. Like many algorithms underlying recent advances in machine learning, ES has been around for a while, but only recently has the compute power been available to make it practical for real problems.
+Evolution Strategies randomizes the _policy_ of an agent rather than exploring with random _actions_. Since the policy represented by even a modest network may contain millions of weights, searching for useful combinations in that space could easily be futile. However, I found that that the convolutional layers of my PPO2 policy seemed to have been able to learn the important characteristics of the game, and the weakness was exploration. With that in mind, I tweaked the OpenAI starter implementation to modify only the fully-connected layer of my PPO2 policy, and trained beginning with four workers, then attempted to expand outward.
+The OpenAI implementation had gone somewhat stale in the past year: the Amazon machine images were out of date, the python libraries were out of date, and the code was targeted only to the MuJoCo environments. In addition, being only one guy, I was limited in the number of EC2 instances I could spin up (20). In OpenAI's paper, they described going over 7000 CPU cores! I got an implementation mostly working on a single machine, but the distributed implementation had some surmountable problems that I just didn't have time to work through in the couple of days I had remaining. I also tried scaling up to a larger single instance, but ran into performance problems that I also have not yet diagnosed.
+I ran a little over 100 training passes across all 47 training levels across 4 workers.
+Despite the limited training, I did see some interesting results. In particular, in some of the runs saw significant spikes in score, and I saw an average score of ~200 per level, which while not impressive, is certainly non-zero.
+I have pushed my code [here](https://github.com/gardenermike/evolution-strategies-starter). The [policies file](https://github.com/gardenermike/evolution-strategies-starter/blob/master/es_distributed/policies.py) contains a Sonic policy that tweaks the pretrained PPO2 policy's fully-connected layer. Expect bugs!
+
+### Conclusion
+I don't expect to reach the top three in the contest, and am probably outside the top 10. However, there is ample room for further exploration here, potentially leading to not just high scores in Sonic, but potentially generalizable algorithms for real-world problems.
+I think that the most promising directions to take forward include:
+* Improving exploration in PPO2. The simplicity of the PPO2 algorithm makes it very appealing.
+* Combining JERK with Rainbow to improve the performance of both
+* Expanding and tidying the ES implementation
+* Improving the LSH memory mechanism used in the PPO2/JERK hybrid.
+
+Good luck!
