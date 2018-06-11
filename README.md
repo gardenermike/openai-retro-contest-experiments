@@ -98,7 +98,7 @@ I didn't hear about the contest until May, although it had started over a month 
 OpenAI published a [blog post](https://blog.openai.com/evolution-strategies/), [paper](https://arxiv.org/abs/1703.03864), and [code](https://github.com/openai/evolution-strategies-starter) in March of 2017 detailing use of Evolution Strategies (ES) to solve problems in a relatively challenging domains. Like many algorithms underlying recent advances in machine learning, ES has been around for a while, but only recently has the compute power been available to make it practical for real problems.
 
 Evolution Strategies randomizes the _policy_ of an agent rather than exploring with random _actions_. Since the policy represented by even a modest network may contain millions of weights, searching for useful combinations in that space could easily be futile. However, I found that that the convolutional layers of my PPO2 policy seemed to have been able to learn the important characteristics of the game, and the weakness was exploration. With that in mind, I tweaked the OpenAI starter implementation to modify only the fully-connected layer of my PPO2 policy, and trained beginning with four workers, then attempted to expand outward.
-The OpenAI implementation had gone somewhat stale in the past year: the Amazon machine images were out of date, the python libraries were out of date, and the code was targeted only to the MuJoCo environments. In addition, being only one guy, I was limited in the number of EC2 instances I could spin up (20). In OpenAI's paper, they described going over 7000 CPU cores! I got an implementation mostly working on a single machine, but the distributed implementation had some surmountable problems that I just didn't have time to work through in the couple of days I had remaining. I also tried scaling up to a larger single instance, but ran into performance problems that I also have not yet diagnosed.
+The OpenAI implementation had gone somewhat stale in the past year: the Amazon machine images were out of date, the python libraries were out of date, and the code was targeted only to the MuJoCo environments. In addition, being only one guy and not an organization with more resources, I was limited in the number of EC2 instances I could spin up (20). In OpenAI's paper, they described going over 7000 CPU cores! I got an implementation mostly working on a single machine, but the distributed implementation had some surmountable problems that I just didn't have time to work through in the couple of days I had remaining. I also tried scaling up to a larger single instance, but ran into performance problems that I also have not yet diagnosed.
 
 I ran a little over 100 training passes across all 47 training levels across 4 workers.
 
@@ -106,12 +106,14 @@ Despite the limited training, I did see some interesting results. In particular,
 
 I have pushed my code [here](https://github.com/gardenermike/evolution-strategies-starter). The [policies file](https://github.com/gardenermike/evolution-strategies-starter/blob/master/es_distributed/policies.py) contains a Sonic policy that tweaks the pretrained PPO2 policy's fully-connected layer. Expect bugs!
 
+The learned weights from my runs are [in this repo](https://github.com/gardenermike/openai-retro-contest-experiments/tree/master/ppo2_evolution_strategies/es_master_17351).
+
 ## Conclusion
 I don't expect to reach the top three in the contest, and am probably outside the top 10. However, there is ample room for further exploration here, potentially leading to not just high scores in Sonic, but potentially generalizable algorithms for real-world problems.
 I think that the most promising directions to take forward include:
 * Improving exploration in PPO2. The simplicity of the PPO2 algorithm makes it very appealing.
-* Combining JERK with Rainbow to improve the performance of both
-* Expanding and tidying the ES implementation
+* Combining JERK with Rainbow to improve the performance of both.
+* Expanding and tidying the ES implementation.
 * Improving the LSH memory mechanism used in the PPO2/JERK hybrid.
 
 Good luck!
