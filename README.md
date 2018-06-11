@@ -102,7 +102,7 @@ The OpenAI implementation had gone somewhat stale in the past year: the Amazon m
 
 I ran a little over 100 training passes across all 47 training levels across 4 workers.
 
-Despite the limited training, I did see some interesting results. In particular, in some of the runs saw significant spikes in score, and I saw an average score of ~200 per level, which while not impressive, is certainly non-zero.
+Despite the limited training, I did see some interesting results. In particular, some of the runs showed significant spikes in score, and I saw an average score of ~200 per level, which while not impressive, is certainly non-zero.
 
 I have pushed my code [here](https://github.com/gardenermike/evolution-strategies-starter). The [policies file](https://github.com/gardenermike/evolution-strategies-starter/blob/master/es_distributed/policies.py) contains a Sonic policy that tweaks the pretrained PPO2 policy's fully-connected layer. Expect bugs!
 
